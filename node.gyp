@@ -542,6 +542,9 @@
       ],
 
       'sources': [
+        'src/qode_shared.cc',
+        'src/node_code_cache_stub.cc',
+        'src/node_snapshot_stub.cc', 
         'src/api/async_resource.cc',
         'src/api/callback.cc',
         'src/api/encoding.cc',

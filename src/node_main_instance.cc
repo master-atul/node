@@ -5,6 +5,8 @@
 #include "node_options-inl.h"
 #include "node_v8_platform-inl.h"
 #include "util-inl.h"
+#include "qode_shared.h"
+
 #if defined(LEAK_SANITIZER)
 #include <sanitizer/lsan_interface.h>
 #endif
@@ -12,6 +14,7 @@
 #if HAVE_INSPECTOR
 #include "inspector/worker_inspector.h"  // ParentInspectorHandle
 #endif
+
 
 namespace node {
 
@@ -118,6 +121,10 @@ int NodeMainInstance::Run() {
   CHECK_NOT_NULL(env);
   Context::Scope context_scope(env->context());
 
+  if (qode::qode_init) {
+    qode::qode_init(env.get());
+  }
+
   if (exit_code == 0) {
     LoadEnvironment(env.get());
 
@@ -129,7 +136,11 @@ int NodeMainInstance::Run() {
       env->performance_state()->Mark(
           node::performance::NODE_PERFORMANCE_MILESTONE_LOOP_START);
       do {
-        uv_run(env->event_loop(), UV_RUN_DEFAULT);
+         if (qode::qode_run_gui_loop) {
+          qode::qode_run_gui_loop();
+        } else {
+          uv_run(env->event_loop(), UV_RUN_DEFAULT);
+        }
 
         per_process::v8_platform.DrainVMTasks(isolate_);
 
