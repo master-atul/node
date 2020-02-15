@@ -62,6 +62,7 @@
         '<(_msvs_precompiled_header)',
         '<(_msvs_precompiled_source)',
       ],
+      'include_dirs':['.'],
     }, { # POSIX
       'defines': [ '__POSIX__' ],
     }],
