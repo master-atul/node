@@ -1044,7 +1044,7 @@ class NinjaWriter(object):
         command = 'cc'
       elif ext == 's' and self.flavor != 'win':  # Doesn't generate .o.d files.
         command = 'cc_s'
-      elif (self.flavor == 'win' and ext == 'asm' and
+      elif (self.flavor == 'win' and (ext == 'asm' or ext == 'S') and
             not self.msvs_settings.HasExplicitAsmRules(spec)):
         command = 'asm'
         # Add the _asm suffix as msvs is capable of handling .cc and
